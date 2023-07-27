@@ -1,5 +1,5 @@
 import { ReactNode, createContext, useState } from "react"
-import { Locale } from "../hooks/useTranslate"
+import { Locale } from "../translations"
 
 
 type LocaleContextValue = {
