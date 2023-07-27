@@ -1,6 +1,6 @@
 import Form from 'react-bootstrap/Form'
 import { useLocale } from '../hooks/useLocale'
-import { Locale } from '../hooks/useTranslate'
+import { Locale } from '../translations'
 
 
 export default function LanguageSwitcher() {
