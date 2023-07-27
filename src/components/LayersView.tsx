@@ -24,6 +24,8 @@ export default function LayersView({ filename, svgElements }: Props) {
 
     const elementsByLayer = groupElementsByLayer(svgElements)
 
+    // console.log(elementsByLayer)
+
     const [modalData, setModalData] = useState<SvgElement[] | null>(null)
 
     const t = useTranslate()

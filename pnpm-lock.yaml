@@ -5,8 +5,8 @@ dependencies:
     specifier: ^5.3.1
     version: 5.3.1(@popperjs/core@2.11.8)
   inkscape-parser:
-    specifier: ^1.0.5
-    version: 1.0.5
+    specifier: ^1.0.6
+    version: 1.0.6
   react:
     specifier: ^18.2.0
     version: 18.2.0
@@ -1965,8 +1965,8 @@ packages:
     resolution: {integrity: sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==}
     dev: true
 
-  /inkscape-parser@1.0.5:
-    resolution: {integrity: sha512-AsIPuGS+ms7fqjsxUcssENrb0VeQRsYoKDDjsiOol4NL9AelEH3hSW4W/VNyar59fCJ1vlC2UPRyPffi/pQKZw==}
+  /inkscape-parser@1.0.6:
+    resolution: {integrity: sha512-JgDmbwdoIfeGsPV/lPTqqefaXn4Eioh0ImaMVFUA0JcI+8FPu9RrmAfQVuuY9eERkiWLDujk5jfRe/0mkqGRxw==}
     hasBin: true
     dependencies:
       '@types/he': 1.2.0

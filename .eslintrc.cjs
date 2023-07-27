@@ -25,5 +25,6 @@ module.exports = {
     '@typescript-eslint/no-non-null-assertion': 'off',
     'no-prototype-builtins': 'off',
     'semi': ['warn', 'never'],
+    'no-console': 'warn',
   },
 }
