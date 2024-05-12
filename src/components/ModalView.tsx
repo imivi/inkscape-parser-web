@@ -7,7 +7,7 @@ import { FileEarmarkExcel, Clipboard } from 'react-bootstrap-icons'
 import { useTranslate } from '../hooks/useTranslate'
 import { AlertContent } from '../App'
 import { type SvgElement } from 'inkscape-parser'
-import { elementsToArray } from '../utils/elementsToArray'
+import { elementsToArray, getNonEmptyColumns } from '../utils/elementsToArray'
 
 
 
@@ -27,9 +27,19 @@ export default function ModalView({ filename, modalData, setModalData }: Props) 
 
     const handleClose = () => setModalData(null)
 
-    const spreadsheetData = useMemo(() => {
-        return modalData ? elementsToArray(modalData, includeEmptyColumns) : []
+
+    // Get the columns to be displayed
+    const columns = useMemo(() => {
+        if(!modalData)              return []
+        if(modalData.length===0)    return []
+        if(includeEmptyColumns)     return Object.keys(modalData[0])
+        else                        return getNonEmptyColumns(modalData)
     }, [modalData, includeEmptyColumns])
+
+    // Build the array
+    const spreadsheetData = useMemo(() => {
+        return modalData ? elementsToArray(modalData, columns) : []
+    }, [modalData, columns])
 
     const csvFilename = `${filename}.csv`
 
@@ -68,7 +78,7 @@ export default function ModalView({ filename, modalData, setModalData }: Props) 
     }, [setAlertContent])
 
     return (
-        <Modal show={ modalData!==null } onHide={ handleClose } size='xl'>
+        <Modal show={ modalData!==null } onHide={ handleClose } size='xl' scrollable>
                 
             <Modal.Header closeButton>
                 <Modal.Title>{ filename }</Modal.Title>

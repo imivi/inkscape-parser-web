@@ -1,4 +1,4 @@
-import { Suspense, lazy, useState } from 'react'
+import { Suspense, lazy, useMemo, useState } from 'react'
 import { Table } from 'react-bootstrap'
 import { Layers, TextareaT, BoundingBoxCircles, ListOl, Question } from 'react-bootstrap-icons'
 import { useTranslate } from '../hooks/useTranslate'
@@ -19,8 +19,8 @@ type Props = {
 export default function LayersView({ filename, svgElements }: Props) {
 
     // Group text & rect elements from all layers
-    const allTextElements = svgElements.filter(element => element.type === "text")
-    const allRectElements = svgElements.filter(element => element.type === "rect")
+    const allTextElements = useMemo(() => svgElements.filter(element => element.type === "text"), [svgElements])
+    const allRectElements = useMemo(() => svgElements.filter(element => element.type === "rect"), [svgElements])
 
     const elementsByLayer = groupElementsByLayer(svgElements)
 
@@ -31,80 +31,80 @@ export default function LayersView({ filename, svgElements }: Props) {
     const t = useTranslate()
 
     return (
-    <div className='output-area'>
+        <div className='output-area'>
 
-        <Suspense fallback={ null }>
-            <ModalView filename={ filename } modalData={ modalData } setModalData={ setModalData }/>
-        </Suspense>
+            <Suspense fallback={null}>
+                <ModalView filename={filename} modalData={modalData} setModalData={setModalData} />
+            </Suspense>
 
-        <h2>{ filename!=="" ? filename+'.svg' : "" }</h2>
+            <h2>{filename !== "" ? filename + '.svg' : ""}</h2>
 
-        {
-        Object.keys(elementsByLayer).length > 0 &&
-        
-        <Table className='svg-layers-list'>
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th><Layers/> { t("layer") }</th>
-                    <th><TextareaT/> { t("text") }</th>
-                    <th><BoundingBoxCircles/> { t("rectangles") }</th>
-                    <th><Question/> { "Any" }</th>
-                </tr>
-            </thead>
+            {
+                Object.keys(elementsByLayer).length > 0 &&
 
-            <tbody>
-                {/* All layers */}
-                <tr>
-                    <td>*</td>
-                    <td style={ {fontStyle:'italic'} }>{ t('all_layers') }</td>
-                    <td>
-                        <DownloadButton
-                            elements={ allTextElements }
-                            setModalData={ setModalData }
-                        />
-                    </td>
-                    <td>
-                        <DownloadButton elements={ allRectElements } setModalData={ setModalData }/>
-                    </td>
-                    <td>
-                        <DownloadButton elements={ svgElements } setModalData={ setModalData }/>
-                    </td>
-                </tr>
+                <Table className='svg-layers-list'>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th><Layers /> {t("layer")}</th>
+                            <th><BoundingBoxCircles /> {t("rectangles")}</th>
+                            <th><TextareaT /> {t("text")}</th>
+                            <th><Question /> {"Any"}</th>
+                        </tr>
+                    </thead>
 
-                { Object.keys(elementsByLayer).map((layer,i) => (
-                    <tr key={ i }>
-                        <td>{ i+1 }</td>
-                        <td>{ layer }</td>
-                        <td>
-                            <DownloadButton
-                                elements={ elementsByLayer[layer].filter(element => element.type === "rect") }
-                                setModalData={ setModalData }
-                            />
-                        </td>
-                        <td>
-                        {
-                            <DownloadButton
-                                elements={ elementsByLayer[layer].filter(element => element.type === "text") }
-                                setModalData={ setModalData }
-                            />
-                        }
-                        </td>
-                        <td>
-                        {
-                            <DownloadButton
-                                elements={ elementsByLayer[layer] }
-                                setModalData={ setModalData }
-                            />
-                        }
-                        </td>
-                    </tr>
-                )) }
-            </tbody>
-        </Table>
-        }
+                    <tbody>
+                        {/* All layers */}
+                        <tr>
+                            <td>*</td>
+                            <td style={{ fontStyle: 'italic' }}>{t('all_layers')}</td>
+                            <td>
+                                <DownloadButton elements={allRectElements} setModalData={setModalData} />
+                            </td>
+                            <td>
+                                <DownloadButton
+                                    elements={allTextElements}
+                                    setModalData={setModalData}
+                                />
+                            </td>
+                            <td>
+                                <DownloadButton elements={svgElements} setModalData={setModalData} />
+                            </td>
+                        </tr>
 
-    </div>
+                        {Object.keys(elementsByLayer).map((layer, i) => (
+                            <tr key={i}>
+                                <td>{i + 1}</td>
+                                <td>{layer}</td>
+                                <td>
+                                    <DownloadButton
+                                        elements={elementsByLayer[layer].filter(element => element.type === "rect")}
+                                        setModalData={setModalData}
+                                    />
+                                </td>
+                                <td>
+                                    {
+                                        <DownloadButton
+                                            elements={elementsByLayer[layer].filter(element => element.type === "text")}
+                                            setModalData={setModalData}
+                                        />
+                                    }
+                                </td>
+                                <td>
+                                    {
+                                        <DownloadButton
+                                            elements={elementsByLayer[layer]}
+                                            setModalData={setModalData}
+                                        />
+                                    }
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </Table>
+            }
+
+        </div>
     )
 }
 
@@ -117,18 +117,18 @@ type DownloadButtonProps = {
 
 function DownloadButton({ elements, setModalData }: DownloadButtonProps) {
 
-    if(elements.length === 0) {
+    if (elements.length === 0) {
         return <span>0</span>
     }
 
     // const newModalData = rect ? buildCsvRowsRect(elements) : buildCsvRows(elements)
-    
+
     return (
         <button
             className='icon-download'
-            onClick={ () => setModalData(elements) }
+            onClick={() => setModalData(elements)}
             data-tip='tooltip'>
-            { elements.length }&nbsp;<ListOl/>
+            {elements.length}&nbsp;<ListOl />
         </button>
     )
 }
